@@ -5,6 +5,7 @@ const {
   createMovie,
   deleteMovie,
 } = require('../controllers/movie');
+const linkRegex = require('../utils/constants');
 
 const movieRouter = express.Router();
 
@@ -16,17 +17,17 @@ movieRouter.post('', celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().regex(/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/mi).required(), //eslint-disable-line
-    trailer: Joi.string().regex(/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/mi).required(), //eslint-disable-line
+    image: Joi.string().regex(linkRegex).required(),
+    trailer: Joi.string().regex(linkRegex).required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-    thumbnail: Joi.string().regex(/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/mi).required(), //eslint-disable-line
+    thumbnail: Joi.string().regex(linkRegex).required(),
     movieId: Joi.number().required(),
   }),
 }), createMovie);
 movieRouter.delete('/:movieId', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number().required(),
+    movieId: Joi.string().length(24).hex().required(),
   }),
 }), deleteMovie);
 

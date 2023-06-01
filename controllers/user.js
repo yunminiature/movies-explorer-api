@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/user');
 const DataError = require('../errors/400');
 const NotFoundError = require('../errors/404');
@@ -32,7 +33,7 @@ const updateUser = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof mongoose.Error.ValidationError) {
         next(new DataError('Переданы некорректные данные'));
       } else {
         next(err);

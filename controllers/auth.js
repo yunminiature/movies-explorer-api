@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -17,7 +18,7 @@ const signUp = (req, res, next) => {
       res.status(201).send({ email, name });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof mongoose.Error.ValidationError) {
         next(new DataError('Переданы некорректные данные'));
       } else if (err.code === 11000) {
         next(new AlreadyExistsError('Пользователь с данным E-mail уже существует'));
