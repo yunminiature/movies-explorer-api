@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const DataError = require('../errors/400');
 const NotFoundError = require('../errors/404');
+const AlreadyExistsError = require('../errors/409');
 
 const getUser = (req, res, next) => {
   User.findById(req.user._id)
@@ -35,6 +36,8 @@ const updateUser = (req, res, next) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         next(new DataError('Переданы некорректные данные'));
+      } else if (err.code === 11000) {
+        next(new AlreadyExistsError('Пользователь с данным E-mail уже существует'));
       } else {
         next(err);
       }
