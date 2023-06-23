@@ -3,7 +3,7 @@ const express = require('express');
 const allowedCors = [
   'https://api.bitfilms.nomoredomains.rocks',
   'https://bitfilms.nomoredomains.rocks',
-  'localhost:3000',
+  'http://localhost:3000',
 ];
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 
